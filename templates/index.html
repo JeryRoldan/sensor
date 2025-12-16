@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sensor Ultrasonido ESP32</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .card {
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      width: 320px;
+    }
+    .valor {
+      font-size: 48px;
+      margin: 20px 0;
+    }
+    .alerta {
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+    .ok {
+      background: #16a34a;
+    }
+    .peligro {
+      background: #dc2626;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>Distancia (cm)</h2>
+  <div class="valor" id="distancia">--</div>
+  <div id="estado" class="alerta ok">Esperando datos...</div>
+</div>
+
+<script>
+async function actualizar() {
+  try {
+    const res = await fetch("/api/distancia");
+    const data = await res.json();
+
+    if (data.distancia !== undefined) {
+      document.getElementById("distancia").innerText = data.distancia.toFixed(2);
+
+      const estado = document.getElementById("estado");
+      if (data.distancia < 20) {
+        estado.innerText = "OBJETO CERCANO";
+        estado.className = "alerta peligro";
+      } else {
+        estado.innerText = "DISTANCIA SEGURA";
+        estado.className = "alerta ok";
+      }
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+setInterval(actualizar, 5000);
+actualizar();
+</script>
+
+</body>
+</html>
