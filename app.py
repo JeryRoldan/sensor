@@ -9,12 +9,6 @@ CHANNEL_ID = "3189980"
 READ_API_KEY = "HUH6AY63EEZMQW1E"
 FIELD = 1
 
-app = Flask(__name__)
-
-# ===== THINGSPEAK =====
-CHANNEL_ID = "TU_CHANNEL_ID"
-READ_API_KEY = "TU_READ_API_KEY"
-FIELD = 1
 
 FEEDS_URL = f"https://api.thingspeak.com/channels/{CHANNEL_ID}/feeds.json"
 
